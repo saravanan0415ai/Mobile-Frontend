@@ -1,0 +1,236 @@
+/* ── General ──────────────────────────────────────────────── */
+.subtitle { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+
+/* ── Operator / Category tabs ─────────────────────────────── */
+.operatorTabs { display: flex; gap: 16px; margin-bottom: 20px; }
+.opTab {
+  flex: 1; padding: 14px; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.05); border-radius: 12px;
+  color: white; cursor: pointer; transition: 0.2s; font-weight: 600;
+}
+.opTab:global(.active) { background: #1e3a8a; border-color: #60a5fa; }
+.opTabActive { background: #1e3a8a; border-color: #60a5fa; }
+
+.categoryTabs {
+  display: flex; gap: 24px; margin-bottom: 30px;
+  border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 12px;
+}
+.catTab { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 14px; padding: 0 4px; }
+.catTabActive { color: white; font-weight: bold; border-bottom: 2px solid #a855f7; }
+
+/* ── Plans grid ───────────────────────────────────────────── */
+.plansGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+.planCard {
+  background: #11131c; border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px; padding: 24px; position: relative; transition: 0.2s;
+}
+.planCard:hover {
+  border-color: rgba(168,85,247,0.3); transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+.tag { position: absolute; right: -10px; top: -10px; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: bold; }
+.tagPopular { background: #9333ea; color: white; }
+.tagBest    { background: #10b981; color: white; }
+.price    { font-size: 32px; font-weight: 700; margin: 0; }
+.validity { color: #94a3b8; font-size: 13px; margin-bottom: 20px; }
+.planFeatures { list-style: none; padding: 0; margin: 0 0 24px 0; }
+.planFeatures li { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 13px; color: #cbd5e1; }
+.planFeatures .icon { color: #a855f7; font-size: 16px; }
+.icon { color: #a855f7; font-size: 16px; }
+.planFeaturesBig li { font-size: 15px; }
+
+/* ── Buttons ──────────────────────────────────────────────── */
+.rechargeBtn,
+.proceedBtn,
+.payNowBtn,
+.btnPrimary {
+  width: 100%; padding: 14px; border-radius: 12px;
+  background: linear-gradient(90deg, #8b5cf6, #d946ef);
+  color: white; border: none; font-weight: 600; cursor: pointer;
+  transition: 0.2s; box-shadow: 0 4px 15px rgba(168,85,247,0.3);
+}
+.rechargeBtn:hover,
+.proceedBtn:hover,
+.payNowBtn:hover:not(:disabled) {
+  box-shadow: 0 6px 20px rgba(168,85,247,0.5);
+}
+.payNowBtn:disabled {
+  opacity: 0.45; cursor: not-allowed;
+  box-shadow: none; background: #4b5563;
+}
+
+/* ── Gateway layout ───────────────────────────────────────── */
+.gatewayContainer {
+  display: flex; max-width: 600px; margin: 0 auto; width: 100%; flex-direction: column;
+}
+.leftPanel { display: flex; flex-direction: column; }
+.backBtn {
+  background: none; border: none; color: white; font-size: 16px;
+  cursor: pointer; margin-bottom: 20px; font-weight: 600; text-align: left;
+}
+
+/* ── Plan summary card ────────────────────────────────────── */
+.planSummaryCard {
+  background: #11131c; border-radius: 20px; padding: 24px;
+  border: 1px solid rgba(255,255,255,0.05); margin-bottom: 24px;
+}
+.planDetailsHeader { display: flex; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+.planDetailsHeader h2 { font-size: 36px; margin: 0; }
+.opLogo { margin-bottom: 16px; }
+.opCircle {
+  width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg,#4f46e5,#9333ea);
+  display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: white;
+}
+
+/* ── Amount to pay ────────────────────────────────────────── */
+.amountToPay {
+  display: flex; justify-content: space-between; align-items: center;
+  background: #11131c; padding: 20px; border-radius: 16px; margin-bottom: 30px;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.amountLabel { color: #94a3b8; }
+.amountValue { font-size: 24px; font-weight: 700; }
+.sectionTitle { font-size: 16px; margin-bottom: 16px; }
+
+/* ── Payment accordion ────────────────────────────────────── */
+.paymentAccordion  { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+.paymentMethod     { background: #11131c; border: 1px solid rgba(255,255,255,0.05); border-radius: 16px; overflow: hidden; }
+.paymentMethodActive { border-color: #a855f7; }
+.methodHeader      { display: flex; justify-content: space-between; padding: 20px; cursor: pointer; }
+.methodName        { font-weight: 500; }
+.radio             { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #64748b; flex-shrink: 0; }
+.radioChecked      { border-color: #a855f7; background: #a855f7; box-shadow: inset 0 0 0 4px #11131c; }
+.methodBody        { padding: 0 20px 20px; }
+
+/* ── Card form fields ─────────────────────────────────────── */
+.cardForm { display: flex; flex-direction: column; gap: 14px; }
+.fieldGroup        { display: flex; flex-direction: column; gap: 6px; }
+.fieldGroupHalf    { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.fieldLabel        { font-size: 12px; color: #94a3b8; letter-spacing: 0.5px; text-transform: uppercase; }
+.fieldLabelRow     { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+.row               { display: flex; gap: 12px; }
+
+/* ── cf-input: base card input style ─────────────────────── */
+.cfInput {
+  width: 100%;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 10px;
+  padding: 13px 14px;
+  color: #f1f5f9;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  box-sizing: border-box;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.cfInput:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.18);
+}
+.cfInputError {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.15);
+}
+
+/* ── Override browser autofill light-blue background ──────── */
+.cfInput:-webkit-autofill,
+.cfInput:-webkit-autofill:hover,
+.cfInput:-webkit-autofill:focus,
+.cfInput:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #0d0f18 inset !important;
+  box-shadow: 0 0 0 1000px #0d0f18 inset !important;
+  -webkit-text-fill-color: #f1f5f9 !important;
+  caret-color: #f1f5f9;
+  border-color: rgba(255,255,255,0.12) !important;
+}
+
+/* ── Inline error messages ────────────────────────────────── */
+.errMsg { color: #f87171; font-size: 12px; margin-top: 2px; }
+
+/* ── Security / wallet notes ──────────────────────────────── */
+.secureNote { color: #64748b; font-size: 12px; margin-top: 4px; text-align: center; }
+.walletNote { color: #94a3b8; font-size: 13px; }
+
+/* ── Success / Processing ─────────────────────────────────── */
+.successCard { text-align: center; margin-top: 100px; }
+.successIcon {
+  font-size: 48px; background: #10b981; width: 80px; height: 80px;
+  border-radius: 50%; display: flex; align-items: center;
+  justify-content: center; margin: 0 auto 24px;
+}
+.spinner {
+  border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #a855f7;
+  border-radius: 50%; width: 50px; height: 50px;
+  animation: spin 1s linear infinite; margin: 0 auto 24px;
+}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* ── Custom Bank Dropdown ──────────────────────────────────── */
+.bankDropdownWrap {
+  position: relative;
+  width: 100%;
+}
+.bankTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
+  gap: 8px;
+}
+.bankTriggerOpen {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.18);
+}
+.bankPlaceholder { color: #4b5563; }
+.bankValue       { color: #f1f5f9; }
+.bankChevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.bankChevronRotated { transform: rotate(180deg); }
+.bankList {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  z-index: 100;
+  list-style: none;
+  margin: 0;
+  padding: 6px;
+  background: #0d0f18;
+  border: 1px solid rgba(168,85,247,0.35);
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 0 1px rgba(168,85,247,0.1);
+  max-height: 200px;
+  overflow-y: auto;
+}
+.bankOption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #cbd5e1;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  user-select: none;
+}
+.bankOption:hover {
+  background: rgba(168,85,247,0.12);
+  color: #f1f5f9;
+}
+.bankOptionSelected {
+  background: rgba(168,85,247,0.2);
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .row { flex-direction: column; }
+}
+

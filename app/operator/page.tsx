@@ -4,19 +4,14 @@ import { useRouter } from "next/navigation";
 import { IoArrowBack, IoLogOutOutline } from "react-icons/io5";
 import Image from "next/image";
 
-import jio from "@/public/jio.png";
-import airtel from "@/public/airtel.png";
-import vi from "@/public/vi.png";
-import bsnl from "@/public/bsnl.png";
-
 export default function Operator() {
   const router = useRouter();
 
   const operators = [
-    { id: "jio", img: jio },
-    { id: "airtel", img: airtel },
-    { id: "vi", img: vi },
-    { id: "bsnl", img: bsnl },
+    { id: "jio", img: "/jio.png" },
+    { id: "airtel", img: "/airtel.png" },
+    { id: "vi", img: "/vi.png" },
+    { id: "bsnl", img: "/bsnl.png" },
   ];
 
   const handleSelect = (id: string) => {
@@ -71,39 +66,41 @@ export default function Operator() {
           min-height: 100vh;
           position: relative;
           color: #fff;
-          font-family: "Inter", sans-serif;
+          font-family: var(--font-geist-sans), sans-serif;
+          overflow-x: hidden;
         }
 
-        /* 🖼️ Background */
+        /* 🌌 UNIQUE ANIMATED BACKGROUND */
         .bg-layer {
           position: fixed;
           inset: 0;
-          background: url("https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1600&auto=format&fit=crop")
-            center/cover no-repeat;
-          filter: brightness(0.35);
+          background: radial-gradient(circle at 15% 50%, #1e1b4b, #000 60%),
+                      radial-gradient(circle at 85% 30%, #312e81, #000 60%);
           z-index: -2;
         }
 
-        /* 🌑 overlay */
         .bg-layer::after {
           content: "";
           position: absolute;
           inset: 0;
-          background: rgba(0, 0, 0, 0.6);
+          background: url("https://www.transparenttextures.com/patterns/stardust.png");
+          opacity: 0.2;
+          z-index: -1;
         }
 
-        /* 🔝 Navbar */
+        /* 🔝 NAVBAR */
         .nav {
           display: flex;
-          align-items: center;
           justify-content: space-between;
-          padding: 1.2rem 1.5rem;
+          align-items: center;
+          padding: 1.5rem 2rem;
+          background: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent);
         }
 
         .nav-btn {
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
           border: 1px solid rgba(255, 255, 255, 0.1);
           background: rgba(255, 255, 255, 0.05);
           color: #fff;
@@ -111,64 +108,84 @@ export default function Operator() {
           align-items: center;
           justify-content: center;
           cursor: pointer;
+          transition: 0.3s;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .nav-btn:hover {
+          background: rgba(255, 255, 255, 0.15);
+          transform: translateY(-2px);
         }
 
         .title {
-          font-size: 1.1rem;
-          font-weight: 600;
+          font-size: 1.25rem;
+          font-weight: 700;
+          letter-spacing: 0.5px;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         /* 📦 Main */
         .container {
-          max-width: 500px;
+          max-width: 550px;
           margin: auto;
           padding: 2rem 1.5rem;
           text-align: center;
         }
 
         .subtitle {
-          color: #cbd5f5;
-          margin-bottom: 2rem;
-          font-size: 0.95rem;
+          color: #94a3b8;
+          margin-bottom: 2.5rem;
+          font-size: 1.05rem;
         }
 
         /* 🧱 Grid */
         .grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 18px;
+          gap: 20px;
         }
 
-        /* 🧊 Card */
+        /* 🧊 UNIQUE CARD DESIGN */
         .card {
-          border-radius: 18px;
+          border-radius: 20px;
           padding: 25px;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(12px);
           display: flex;
           justify-content: center;
           align-items: center;
-          transition: border 0.2s ease, background 0.2s ease;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .card:hover {
-          border-color: rgba(255, 255, 255, 0.2);
+          transform: translateY(-5px) scale(1.02);
+          border-color: rgba(99, 102, 241, 0.4);
+          box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.2);
           background: rgba(255, 255, 255, 0.06);
         }
 
         .logo-box {
-          background: #fff;
-          border-radius: 14px;
-          padding: 12px;
+          background: rgba(255, 255, 255, 0.9);
+          border-radius: 16px;
+          padding: 14px;
           display: flex;
           align-items: center;
           justify-content: center;
+          box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+          transition: transform 0.3s;
+        }
+
+        .card:hover .logo-box {
+          transform: scale(1.1);
         }
 
         /* 📱 Mobile */
         @media (max-width: 480px) {
           .grid {
-            gap: 14px;
+            gap: 16px;
           }
 
           .card {

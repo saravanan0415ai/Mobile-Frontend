@@ -19,35 +19,63 @@ export default function Users() {
     role: "user",
   });
   const [editing, setEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const stored = localStorage.getItem("users");
-
-    if (stored) {
-      setUsers(JSON.parse(stored));
-    } else {
-      localStorage.setItem("users", JSON.stringify(data.users));
-      setUsers(data.users);
+  // Fetch users from the backend
+  const fetchUsers = async () => {
+    try {
+      const res = await fetch("http://localhost:8080/api/users");
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data);
+      } else {
+        console.error("Failed to load users from backend");
+      }
+    } catch (err) {
+      console.error("Error connecting to backend:", err);
+    } finally {
+      setLoading(false);
     }
-  }, []);
-
-  const save = (updated: User[]) => {
-    localStorage.setItem("users", JSON.stringify(updated));
-    setUsers(updated);
   };
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  const handleSubmit = async () => {
     if (!form.email || !form.password) return;
 
     if (editing) {
-      const updated = users.map((u) =>
-        u.id === form.id ? form : u
-      );
-      save(updated);
+      try {
+        const res = await fetch(`http://localhost:8080/api/users/${form.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        if (res.ok) {
+          const updatedUser = await res.json();
+          setUsers(users.map((u) => (u.id === updatedUser.id ? updatedUser : u)));
+        }
+      } catch (err) {
+        console.error("Error updating user:", err);
+      }
       setEditing(false);
     } else {
-      const newUser = { ...form, id: Date.now() };
-      save([...users, newUser]);
+      try {
+        const res = await fetch("http://localhost:8080/api/users", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+        if (res.ok) {
+          const newUser = await res.json();
+          setUsers([...users, newUser]);
+        } else if (res.status === 409) {
+          alert("User already exists!");
+        }
+      } catch (err) {
+        console.error("Error adding user:", err);
+      }
     }
 
     setForm({ id: 0, email: "", password: "", role: "user" });
@@ -58,9 +86,17 @@ export default function Users() {
     setEditing(true);
   };
 
-  const handleDelete = (id: number) => {
-    const updated = users.filter((u) => u.id !== id);
-    save(updated);
+  const handleDelete = async (id: number) => {
+    try {
+      const res = await fetch(`http://localhost:8080/api/users/${id}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setUsers(users.filter((u) => u.id !== id));
+      }
+    } catch (err) {
+      console.error("Error deleting user:", err);
+    }
   };
 
   return (
@@ -82,6 +118,7 @@ export default function Users() {
         <input
           placeholder="Password"
           value={form.password}
+          type="password"
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
 
@@ -107,121 +144,98 @@ export default function Users() {
           <span>Actions</span>
         </div>
 
-        {users.map((u) => (
-          <div key={u.id} className="row">
-            <span>{u.email}</span>
-            <span className="password">••••••••</span>
-            <span className={`role ${u.role}`}>{u.role}</span>
+        {loading ? (
+          <p style={{ padding: 12 }}>Loading users...</p>
+        ) : users.length === 0 ? (
+          <p style={{ padding: 12 }}>No users found.</p>
+        ) : (
+          users.map((u) => (
+            <div key={u.id} className="row">
+              <span>{u.email}</span>
+              <span className="password">••••••••</span>
+              <span className={`role ${u.role}`}>{u.role}</span>
 
-            <div className="actions">
-              <button onClick={() => handleEdit(u)}>Edit</button>
-              <button className="delete" onClick={() => handleDelete(u.id)}>
-                Delete
-              </button>
+              <div className="actions">
+                <button onClick={() => handleEdit(u)}>Edit</button>
+                <button className="delete" onClick={() => handleDelete(u.id)}>
+                  Delete
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
-      {/* STYLES */}
       <style jsx>{`
         .page {
           color: white;
         }
 
         .page-header {
-          margin-bottom: 20px;
+          margin-bottom: 25px;
         }
 
         .page-header h2 {
-          font-size: 1.5rem;
-          margin-bottom: 5px;
+          font-size: 1.8rem;
+          margin-bottom: 8px;
+          font-weight: 700;
+          letter-spacing: -0.5px;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
 
         .page-header p {
-          color: #cbd5f5;
-          font-size: 0.9rem;
+          color: #94a3b8;
+          font-size: 1rem;
         }
 
-        /* 💎 Glass Card */
-        .card {
-          background: rgba(255,255,255,0.05);
-          backdrop-filter: blur(12px);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 16px;
-          padding: 18px;
-          margin-bottom: 20px;
-        }
-
-        /* 🧾 FORM GRID */
+        /* 🧾 ADVANCED FORM GRID */
         .form-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 12px;
+          gap: 16px;
         }
 
         .form-grid input,
         .form-grid select {
-          padding: 10px;
-          border-radius: 8px;
-          border: none;
-          background: #111;
+          padding: 14px;
+          border-radius: 12px;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.05);
+          color: white;
+          font-size: 14px;
+          transition: 0.3s;
+        }
+
+        .form-grid input:focus,
+        .form-grid select:focus {
+          outline: none;
+          border-color: #8b5cf6;
+          box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+          background: rgba(255, 255, 255, 0.1);
+        }
+
+        .form-grid option {
+          background: #1e1b4b;
           color: white;
         }
 
         .form-grid button {
           grid-column: span 2;
-          padding: 12px;
-          background: linear-gradient(135deg, #6366f1, #06b6d4);
+          padding: 14px;
+          background: linear-gradient(135deg, #6366f1, #8b5cf6);
           border: none;
-          border-radius: 10px;
+          border-radius: 12px;
           color: white;
-          font-weight: 500;
-        }
-
-        /* 📊 TABLE */
-        .table {
-          overflow-x: auto;
-        }
-
-        .row {
-          display: grid;
-          grid-template-columns: 2fr 1fr 1fr 1fr;
-          padding: 12px;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
-          align-items: center;
-        }
-
-        .header {
           font-weight: 600;
-          color: #aaa;
-        }
-
-        .password {
-          letter-spacing: 2px;
-          color: #888;
-        }
-
-        .actions button {
-          margin-right: 5px;
-          padding: 6px 10px;
-          border: none;
-          border-radius: 6px;
-          background: rgba(255,255,255,0.1);
-          color: white;
+          letter-spacing: 0.5px;
           cursor: pointer;
+          transition: all 0.3s;
+          box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
         }
 
-        .actions .delete {
-          background: #ef4444;
-        }
-
-        .role.admin {
-          color: #6366f1;
-        }
-
-        .role.user {
-          color: #22c55e;
+        .form-grid button:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
         }
 
         /* 📱 Mobile */
@@ -232,11 +246,6 @@ export default function Users() {
 
           .form-grid button {
             grid-column: span 1;
-          }
-
-          .row {
-            grid-template-columns: 1fr;
-            gap: 6px;
           }
         }
       `}</style>

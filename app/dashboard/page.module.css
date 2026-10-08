@@ -1,0 +1,235 @@
+/* ── Grid layout ──────────────────────────────────────────── */
+.dashboardGrid { display: flex; flex-direction: column; gap: 24px; }
+
+.statsRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.statCard {
+  background: #11131c;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+
+.statCardPrimary {
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  border: none;
+}
+
+.statCardPrimary::after {
+  content: "";
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 150px;
+  height: 150px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+
+.statIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+  z-index: 1;
+}
+
+.statInfo { display: flex; flex-direction: column; gap: 4px; z-index: 1; }
+
+.label { color: #94a3b8; font-size: 14px; }
+.statCardPrimary .label { color: rgba(255,255,255,0.8); }
+.value { font-size: 28px; font-weight: 700; color: white; }
+
+.addMoney {
+  margin-top: 16px;
+  background: rgba(0,0,0,0.2);
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  width: fit-content;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.subtitle { margin-top: 16px; font-size: 13px; color: #64748b; }
+
+/* ── Middle row ───────────────────────────────────────────── */
+.middleRow {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.card {
+  background: #11131c;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 20px;
+  padding: 24px;
+}
+
+/* ── Quick Recharge ───────────────────────────────────────── */
+.quickRecharge h3 { margin-bottom: 4px; font-size: 18px; }
+.desc { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+
+.inputBox label {
+  display: block;
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.inputBox input {
+  width: 100%;
+  background: rgba(0,0,0,0.3);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: white;
+  font-size: 15px;
+  margin-bottom: 20px;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+.inputBox input:focus {
+  border-color: #a855f7;
+  box-shadow: 0 0 0 3px rgba(168,85,247,0.15);
+}
+
+.opLabel { display: block; color: #94a3b8; font-size: 13px; margin-bottom: 12px; }
+
+.operators { display: flex; gap: 16px; margin-bottom: 24px; }
+
+.opBox {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.opBox:hover { border-color: #a855f7; background: rgba(168,85,247,0.1); }
+
+.opCircle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.rechargeBtn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #8b5cf6, #d946ef);
+  color: white;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.rechargeBtn:hover { opacity: 0.9; }
+
+/* ── Banner ───────────────────────────────────────────────── */
+.banner {
+  background: #1e1b4b;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 30px;
+}
+.bannerContent { z-index: 1; }
+.banner h3 { font-size: 20px; line-height: 1.4; margin-bottom: 20px; }
+.banner h3 span { color: #d946ef; font-weight: 800; font-size: 24px; }
+.banner button {
+  background: white;
+  color: #1e1b4b;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+}
+.bannerGfx {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  width: 120px;
+  height: 120px;
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  border-radius: 30px;
+  transform: rotate(-15deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.5;
+}
+
+/* ── Recent Transactions ──────────────────────────────────── */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.cardHeader h3 { font-size: 16px; }
+.viewAll { color: #a855f7; font-size: 13px; cursor: pointer; }
+.recentTx { overflow-x: auto; }
+
+.table { display: flex; flex-direction: column; min-width: 800px; }
+
+.tr {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr 1fr 1fr 1.5fr;
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  align-items: center;
+  font-size: 14px;
+  color: #e2e8f0;
+}
+.trTh {
+  color: #94a3b8;
+  font-size: 12px;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.statusBadge { padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+.statusSuccess { background: rgba(34,197,94,0.1); color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+
+.date  { color: #94a3b8; font-size: 13px; }
+.mobile { font-weight: 500; }
+.plan  { color: #cbd5e1; }
+.amount { font-weight: 600; }
+
+.opBadge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: bold; }
+.opBadgeJio    { background: rgba(59,130,246,0.1);  color: #60a5fa; border: 1px solid rgba(59,130,246,0.2); }
+.opBadgeAirtel { background: rgba(239,68,68,0.1);   color: #f87171; border: 1px solid rgba(239,68,68,0.2); }
+.opBadgeVi     { background: rgba(249,115,22,0.1);  color: #fb923c; border: 1px solid rgba(249,115,22,0.2); }
+.opBadgeBsnl   { background: rgba(34,197,94,0.1);   color: #4ade80; border: 1px solid rgba(34,197,94,0.2); }
+

@@ -2,171 +2,164 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import UserLayout from "../components/UserLayout";
+import { IoWalletOutline, IoSwapVerticalOutline, IoCardOutline, IoFlashOutline } from "react-icons/io5";
+import styles from "./page.module.css";
 
 export default function Dashboard() {
   const [mobile, setMobile] = useState<string>("");
   const router = useRouter();
 
-  const handleProceed = () => {
-    if (mobile.length === 10 && !isNaN(Number(mobile))) {
+  const operators = [
+    { name: "Jio",    id: "jio",    bg: "#1e3a8a", color: "#60a5fa" },
+    { name: "Airtel", id: "airtel", bg: "#7f1d1d", color: "#f87171" },
+    { name: "Vi",     id: "vi",     bg: "#7c2d12", color: "#fb923c" },
+    { name: "BSNL",   id: "bsnl",   bg: "#14532d", color: "#4ade80" },
+  ];
+
+  const handleRecharge = () => {
+    if (mobile.length === 10) {
       localStorage.setItem("mobile", mobile);
-      router.push("/operator");
+      router.push("/plans");
     } else {
-      alert("Enter valid 10-digit mobile number");
+      alert("Enter a valid 10-digit mobile number");
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    router.push("/");
-  };
-
   return (
-    <div className="dashboard-bg vh-100 d-flex flex-column">
+    <UserLayout title="Dashboard">
+      <div className={styles.dashboardGrid}>
 
-      {/* Navbar */}
-      <div className="premium-navbar d-flex align-items-center justify-content-between px-3 py-2">
-
-        <button className="icon-btn" onClick={() => router.back()}>
-          ←
-        </button>
-
-        <h6 className="m-0 text-white fw-bold text-center">
-          Recharge
-        </h6>
-
-        <button className="icon-btn" onClick={handleLogout}>
-          ⎋
-        </button>
-
-      </div>
-
-      {/* Content */}
-      <div className="flex-grow-1 d-flex align-items-center justify-content-center px-3">
-        
-        <div className="glass-card p-4 w-100" style={{ maxWidth: "380px" }}>
-          
-          <div className="text-center mb-4">
-            <h4 className="fw-bold text-white">Enter Mobile</h4>
-            <p className="small text-light opacity-75">
-              Recharge your number 📱
-            </p>
+        {/* ── STATS ────────────────────────────────────────── */}
+        <div className={styles.statsRow}>
+          <div className={`${styles.statCard} ${styles.statCardPrimary}`}>
+            <div className={styles.statIcon}><IoWalletOutline size={24} /></div>
+            <div className={styles.statInfo}>
+              <span className={styles.label}>Wallet Balance</span>
+              <span className={styles.value}>₹ 245.00</span>
+            </div>
+            <button className={styles.addMoney}>Add Money</button>
           </div>
 
-          <div className="mb-3">
-            <label className="form-label text-light">Mobile Number</label>
-            <input
-              type="tel"
-              maxLength={10}
-              className="form-control glass-input rounded-3"
-              placeholder="Enter 10-digit number"
-              value={mobile}
-              onChange={(e) => setMobile(e.target.value)}
-            />
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}><IoSwapVerticalOutline size={24} /></div>
+            <div className={styles.statInfo}>
+              <span className={styles.label}>Total Recharges</span>
+              <span className={styles.value}>12</span>
+            </div>
+            <span className={styles.subtitle}>This Month</span>
           </div>
 
-          <div className="mb-3">
-            <small className="text-light opacity-75">Recent</small>
-            <div className="d-flex gap-2 mt-2 flex-wrap">
-              {["9876543210", "9123456780"].map((num) => (
-                <span
-                  key={num}
-                  className="badge recent-badge"
-                  onClick={() => setMobile(num)}
+          <div className={styles.statCard}>
+            <div className={styles.statIcon}><IoCardOutline size={24} /></div>
+            <div className={styles.statInfo}>
+              <span className={styles.label}>Total Spent</span>
+              <span className={styles.value}>₹ 1,780</span>
+            </div>
+            <span className={styles.subtitle}>This Month</span>
+          </div>
+        </div>
+
+        {/* ── QUICK RECHARGE + BANNER ───────────────────────── */}
+        <div className={styles.middleRow}>
+          <div className={`${styles.quickRecharge} ${styles.card}`}>
+            <h3>Quick Recharge</h3>
+            <p className={styles.desc}>Recharge your mobile number instantly</p>
+
+            <div className={styles.inputBox}>
+              <label htmlFor="mobile-input">Mobile Number</label>
+              <input
+                id="mobile-input"
+                type="tel"
+                inputMode="numeric"
+                maxLength={10}
+                placeholder="Enter 10-digit mobile number"
+                value={mobile}
+                suppressHydrationWarning
+                onChange={(e) => {
+                  // ✅ Strip every non-digit character — only numbers allowed
+                  const digitsOnly = e.target.value.replace(/\D/g, "");
+                  setMobile(digitsOnly);
+                }}
+              />
+            </div>
+
+            <label className={styles.opLabel}>Operator</label>
+            <div className={styles.operators}>
+              {operators.map((op) => (
+                <div
+                  key={op.id}
+                  className={styles.opBox}
+                  onClick={() => localStorage.setItem("operator", op.id)}
                 >
-                  {num}
-                </span>
+                  <div
+                    className={styles.opCircle}
+                    style={{ background: op.bg, color: op.color }}
+                  >
+                    {op.name.charAt(0)}
+                  </div>
+                </div>
               ))}
             </div>
+
+            <button className={styles.rechargeBtn} onClick={handleRecharge}>
+              Recharge Now
+            </button>
           </div>
 
-          <button
-            onClick={handleProceed}
-            className="btn glass-btn w-100 rounded-3 mt-2"
-          >
-            Proceed
-          </button>
-
+          <div className={`${styles.banner} ${styles.card}`}>
+            <div className={styles.bannerContent}>
+              <h3>
+                Get up to<br />
+                <span>₹50 Cashback</span><br />
+                on every recharge
+              </h3>
+              <button>View Offers</button>
+            </div>
+            <div className={styles.bannerGfx}>
+              <IoFlashOutline size={60} color="#fff" />
+            </div>
+          </div>
         </div>
+
+        {/* ── RECENT TRANSACTIONS ───────────────────────────── */}
+        <div className={`${styles.recentTx} ${styles.card}`}>
+          <div className={styles.cardHeader}>
+            <h3>Recent Transactions</h3>
+            <span className={styles.viewAll}>View All →</span>
+          </div>
+
+          <div className={styles.table}>
+            <div className={`${styles.tr} ${styles.trTh}`}>
+              <div>Mobile Number</div>
+              <div>Operator</div>
+              <div>Plan</div>
+              <div>Amount</div>
+              <div>Status</div>
+              <div>Date</div>
+            </div>
+
+            <div className={styles.tr}>
+              <div className={styles.mobile}>+91 98765 43210</div>
+              <div><span className={`${styles.opBadge} ${styles.opBadgeJio}`}>Jio</span></div>
+              <div className={styles.plan}>₹199 - 28 Days</div>
+              <div className={styles.amount}>₹199</div>
+              <div><span className={`${styles.statusBadge} ${styles.statusSuccess}`}>Success</span></div>
+              <div className={styles.date}>12 Apr 2025, 10:24 AM</div>
+            </div>
+
+            <div className={styles.tr}>
+              <div className={styles.mobile}>+91 87654 32109</div>
+              <div><span className={`${styles.opBadge} ${styles.opBadgeAirtel}`}>Airtel</span></div>
+              <div className={styles.plan}>₹299 - 56 Days</div>
+              <div className={styles.amount}>₹299</div>
+              <div><span className={`${styles.statusBadge} ${styles.statusSuccess}`}>Success</span></div>
+              <div className={styles.date}>11 Apr 2025, 07:18 PM</div>
+            </div>
+          </div>
+        </div>
+
       </div>
-
-      {/* STYLES */}
-      <style jsx>{`
-        .dashboard-bg {
-          min-height: 100vh;
-          background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                      url('/mobile-research.jpg');
-          background-size: cover;
-          background-position: center;
-          background-repeat: no-repeat;
-        }
-
-        .premium-navbar {
-          background: rgba(255,255,255,0.08);
-          backdrop-filter: blur(10px);
-          border-bottom: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .icon-btn {
-          background: rgba(255,255,255,0.15);
-          border: none;
-          color: #fff;
-          padding: 8px 12px;
-          border-radius: 10px;
-          transition: 0.2s;
-        }
-
-        .icon-btn:hover {
-          transform: scale(1.1);
-        }
-
-        .glass-card {
-          background: rgba(255,255,255,0.12);
-          backdrop-filter: blur(15px);
-          border-radius: 20px;
-          border: 1px solid rgba(255,255,255,0.2);
-          box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        }
-
-        .glass-input {
-          background: rgba(255,255,255,0.2);
-          border: none;
-          color: #fff;
-        }
-
-        .glass-input::placeholder {
-          color: #ddd;
-        }
-
-        .glass-input:focus {
-          outline: none;
-          box-shadow: 0 0 10px rgba(59,130,246,0.6);
-        }
-
-        .recent-badge {
-          background: rgba(255,255,255,0.2);
-          color: #fff;
-          padding: 6px 10px;
-          border-radius: 12px;
-          cursor: pointer;
-        }
-
-        .recent-badge:hover {
-          background: #3b82f6;
-        }
-
-        .glass-btn {
-          background: linear-gradient(135deg, #3b82f6, #06b6d4);
-          color: white;
-          border: none;
-          transition: 0.3s;
-        }
-
-        .glass-btn:hover {
-          transform: scale(1.05);
-          box-shadow: 0 10px 25px rgba(59,130,246,0.5);
-        }
-      `}</style>
-    </div>
+    </UserLayout>
   );
 }

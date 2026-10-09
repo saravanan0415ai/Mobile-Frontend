@@ -11,7 +11,7 @@ export default function History() {
     async function fetchTransactions() {
       let backendTxns: any[] = [];
       try {
-        const res = await fetch("http://localhost:8080/api/payments");
+        const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080") + "/api/payments");
         if (res.ok) {
           const data = await res.json();
           backendTxns = data.map((txn: any) => ({

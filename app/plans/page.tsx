@@ -177,7 +177,7 @@ export default function Plans() {
     const operator = localStorage.getItem("operator") || activeOp;
 
     try {
-      const res = await fetch("http://localhost:8080/api/payments", {
+      const res = await fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080") + "/api/payments", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Only metadata — no raw card data
@@ -308,7 +308,7 @@ export default function Plans() {
               className={styles.proceedBtn}
               onClick={() => {
                 if (localStorage.getItem("guest") === "true") {
-                  fetch("http://localhost:8080/api/notify/guest-recharge", { method: "POST" }).catch(console.error);
+                  fetch((process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080") + "/api/notify/guest-recharge", { method: "POST" }).catch(console.error);
                   alert("Please sign up or log in to perform a mobile recharge.");
                 } else {
                   setStep("payment_method");

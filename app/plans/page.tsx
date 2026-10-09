@@ -308,8 +308,8 @@ export default function Plans() {
               className={styles.proceedBtn}
               onClick={() => {
                 if (localStorage.getItem("guest") === "true") {
-                  alert("Please sign up to perform mobile recharges.");
-                  router.push("/signup");
+                  fetch("http://localhost:8080/api/notify/guest-recharge", { method: "POST" }).catch(console.error);
+                  alert("Please sign up or log in to perform a mobile recharge.");
                 } else {
                   setStep("payment_method");
                 }
